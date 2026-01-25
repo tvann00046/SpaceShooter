@@ -65,6 +65,7 @@
     <Compile Include="Assets\HelloWolrd.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\PoolingController.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\DirectMoving.cs" />
+    <Compile Include="Assets\BulletMove.cs" />
     <Compile Include="Assets\PlayerMovement.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\Bonus.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\FollowThePath.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\LevelController.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\VisualEffect.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\Boundary.cs" />
+    <Compile Include="Assets\PlayerShoot.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\Projectile.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\PlayerShooting.cs" />
     <Compile Include="Assets\Space Shooter Template FREE\Scripts\Enemy.cs" />
