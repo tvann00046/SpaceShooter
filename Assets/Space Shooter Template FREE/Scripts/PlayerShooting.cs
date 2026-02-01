@@ -17,6 +17,9 @@ public class Guns
 
 public class PlayerShooting : MonoBehaviour
 {
+    // 👉 DÒNG QUAN TRỌNG để Bonus.cs không lỗi
+    public static PlayerShooting instance;
+
     [Header("Shooting Settings")]
     [Tooltip("Shooting frequency (higher = faster)")]
     public float fireRate = 8f;
@@ -30,22 +33,24 @@ public class PlayerShooting : MonoBehaviour
     [Range(1, 4)]
     public int weaponPower = 1;
 
+    public int maxweaponPower = 4;
+    public bool shootingIsActive = true;
+
     public Guns guns;
 
-    public bool shootingIsActive = true;
-    public int maxweaponPower = 4;
-
-    public static PlayerShooting instance;
-
+    // =========================
     private void Awake()
     {
+        // Singleton
         if (instance == null)
             instance = this;
+        else
+            Destroy(gameObject);
     }
 
     private void Start()
     {
-        // Get particle systems
+        // Get particle systems safely
         if (guns.leftGun != null)
             guns.leftGunVFX = guns.leftGun.GetComponent<ParticleSystem>();
 
@@ -60,7 +65,7 @@ public class PlayerShooting : MonoBehaviour
     {
         if (!shootingIsActive) return;
 
-        // HOLD mouse left button to shoot
+        // HOLD left mouse / tap screen
         if (Input.GetMouseButton(0))
         {
             if (Time.time >= nextFire)
@@ -71,37 +76,72 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    // =========================
     // Shooting logic
     void MakeAShot()
     {
         switch (weaponPower)
         {
             case 1:
-                CreateLazerShot(projectileObject, guns.centralGun.transform.position, Vector3.zero);
+                CreateLazerShot(
+                    projectileObject,
+                    guns.centralGun.transform.position,
+                    Vector3.zero
+                );
                 guns.centralGunVFX?.Play();
                 break;
 
             case 2:
-                CreateLazerShot(projectileObject, guns.leftGun.transform.position, Vector3.zero);
-                CreateLazerShot(projectileObject, guns.rightGun.transform.position, Vector3.zero);
+                CreateLazerShot(
+                    projectileObject,
+                    guns.leftGun.transform.position,
+                    Vector3.zero
+                );
+                CreateLazerShot(
+                    projectileObject,
+                    guns.rightGun.transform.position,
+                    Vector3.zero
+                );
                 guns.leftGunVFX?.Play();
                 guns.rightGunVFX?.Play();
                 break;
 
             case 3:
-                CreateLazerShot(projectileObject, guns.centralGun.transform.position, Vector3.zero);
-                CreateLazerShot(projectileObject, guns.leftGun.transform.position, new Vector3(0, 0, 5));
-                CreateLazerShot(projectileObject, guns.rightGun.transform.position, new Vector3(0, 0, -5));
+                CreateLazerShot(
+                    projectileObject,
+                    guns.centralGun.transform.position,
+                    Vector3.zero
+                );
+                CreateLazerShot(
+                    projectileObject,
+                    guns.leftGun.transform.position,
+                    new Vector3(0, 0, 5)
+                );
+                CreateLazerShot(
+                    projectileObject,
+                    guns.rightGun.transform.position,
+                    new Vector3(0, 0, -5)
+                );
                 guns.leftGunVFX?.Play();
                 guns.rightGunVFX?.Play();
                 break;
 
             case 4:
-                CreateLazerShot(projectileObject, guns.centralGun.transform.position, Vector3.zero);
-                CreateLazerShot(projectileObject, guns.leftGun.transform.position, new Vector3(0, 0, 5));
-                CreateLazerShot(projectileObject, guns.rightGun.transform.position, new Vector3(0, 0, -5));
-                CreateLazerShot(projectileObject, guns.leftGun.transform.position, new Vector3(0, 0, 15));
-                CreateLazerShot(projectileObject, guns.rightGun.transform.position, new Vector3(0, 0, -15));
+                CreateLazerShot(
+                    projectileObject,
+                    guns.centralGun.transform.position,
+                    Vector3.zero
+                );
+                CreateLazerShot(
+                    projectileObject,
+                    guns.leftGun.transform.position,
+                    new Vector3(0, 0, 8)
+                );
+                CreateLazerShot(
+                    projectileObject,
+                    guns.rightGun.transform.position,
+                    new Vector3(0, 0, -8)
+                );
                 guns.leftGunVFX?.Play();
                 guns.rightGunVFX?.Play();
                 break;
@@ -111,5 +151,14 @@ public class PlayerShooting : MonoBehaviour
     void CreateLazerShot(GameObject lazer, Vector3 pos, Vector3 rot)
     {
         Instantiate(lazer, pos, Quaternion.Euler(rot));
+    }
+
+    // =========================
+    // Optional: increase weapon power (used by Bonus)
+    public void UpgradeWeapon()
+    {
+        weaponPower++;
+        if (weaponPower > maxweaponPower)
+            weaponPower = maxweaponPower;
     }
 }
